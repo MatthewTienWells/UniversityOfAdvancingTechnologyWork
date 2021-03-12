@@ -1,0 +1,2 @@
+C:\Users\wells\source\repos\BankHackHomework\x64\Debug\BankHackHomework.exe
+C:\Users\wells\source\repos\BankHackHomework\x64\Debug\BankHackHomework.pdb

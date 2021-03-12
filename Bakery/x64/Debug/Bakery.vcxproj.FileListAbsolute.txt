@@ -1,0 +1,2 @@
+C:\Users\wells\source\repos\Bakery\x64\Debug\Bakery.exe
+C:\Users\wells\source\repos\Bakery\x64\Debug\Bakery.pdb

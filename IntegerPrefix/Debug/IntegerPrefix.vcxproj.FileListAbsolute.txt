@@ -1,0 +1,2 @@
+C:\Users\wells\source\repos\IntegerPrefix\Debug\IntegerPrefix.exe
+C:\Users\wells\source\repos\IntegerPrefix\Debug\IntegerPrefix.pdb

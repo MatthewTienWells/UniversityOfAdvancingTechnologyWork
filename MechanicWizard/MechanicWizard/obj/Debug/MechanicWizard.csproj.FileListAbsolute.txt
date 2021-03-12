@@ -1,0 +1,9 @@
+C:\Users\wells\source\repos\MechanicWizard\MechanicWizard\obj\Debug\MechanicWizard.Properties.Resources.resources
+C:\Users\wells\source\repos\MechanicWizard\MechanicWizard\obj\Debug\MechanicWizard.csproj.GenerateResource.cache
+C:\Users\wells\source\repos\MechanicWizard\MechanicWizard\obj\Debug\MechanicWizard.csproj.CoreCompileInputs.cache
+C:\Users\wells\source\repos\MechanicWizard\MechanicWizard\bin\Debug\MechanicWizard.exe.config
+C:\Users\wells\source\repos\MechanicWizard\MechanicWizard\bin\Debug\MechanicWizard.exe
+C:\Users\wells\source\repos\MechanicWizard\MechanicWizard\bin\Debug\MechanicWizard.pdb
+C:\Users\wells\source\repos\MechanicWizard\MechanicWizard\obj\Debug\MechanicWizard.exe
+C:\Users\wells\source\repos\MechanicWizard\MechanicWizard\obj\Debug\MechanicWizard.pdb
+C:\Users\wells\source\repos\MechanicWizard\MechanicWizard\obj\Debug\MechanicWizard.Form1.resources

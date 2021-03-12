@@ -1,0 +1,2 @@
+C:\Users\wells\source\repos\IODemo\Debug\IODemo.exe
+C:\Users\wells\source\repos\IODemo\Debug\IODemo.pdb

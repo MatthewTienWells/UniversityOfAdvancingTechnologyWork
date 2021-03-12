@@ -1,0 +1,11 @@
+C:\Users\wells\source\repos\CompanyBenefits\CompanyBenefits\bin\Debug\CompanyBenefits.exe.config
+C:\Users\wells\source\repos\CompanyBenefits\CompanyBenefits\bin\Debug\CompanyBenefits.exe
+C:\Users\wells\source\repos\CompanyBenefits\CompanyBenefits\bin\Debug\CompanyBenefits.pdb
+C:\Users\wells\source\repos\CompanyBenefits\CompanyBenefits\obj\Debug\CompanyBenefits.Form1.resources
+C:\Users\wells\source\repos\CompanyBenefits\CompanyBenefits\obj\Debug\CompanyBenefits.Properties.Resources.resources
+C:\Users\wells\source\repos\CompanyBenefits\CompanyBenefits\obj\Debug\CompanyBenefits.csproj.GenerateResource.cache
+C:\Users\wells\source\repos\CompanyBenefits\CompanyBenefits\obj\Debug\CompanyBenefits.csproj.CoreCompileInputs.cache
+C:\Users\wells\source\repos\CompanyBenefits\CompanyBenefits\obj\Debug\CompanyBenefits.exe
+C:\Users\wells\source\repos\CompanyBenefits\CompanyBenefits\obj\Debug\CompanyBenefits.pdb
+C:\Users\wells\source\repos\CompanyBenefits\CompanyBenefits\obj\Debug\CompanyBenefits.Form2.resources
+C:\Users\wells\source\repos\CompanyBenefits\CompanyBenefits\obj\Debug\CompanyBenefits.Form3.resources

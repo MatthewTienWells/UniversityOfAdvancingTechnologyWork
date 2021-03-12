@@ -1,0 +1,3 @@
+﻿  Source.cpp
+C:\Users\wells\source\repos\Code Hunter\Source.cpp(33,20): warning C4018: '<': signed/unsigned mismatch
+  Code Hunter.vcxproj -> C:\Users\wells\source\repos\Code Hunter\Debug\Code Hunter.exe

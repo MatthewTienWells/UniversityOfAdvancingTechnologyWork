@@ -1,0 +1,2 @@
+C:\Users\wells\source\repos\AsteroidExplorer\Debug\AsteroidExplorer.exe
+C:\Users\wells\source\repos\AsteroidExplorer\Debug\AsteroidExplorer.pdb

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29920.165
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MechanicWizard", "MechanicWizard\MechanicWizard.csproj", "{BBD3E1A5-A070-4676-825F-9147066BE616}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BBD3E1A5-A070-4676-825F-9147066BE616}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBD3E1A5-A070-4676-825F-9147066BE616}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBD3E1A5-A070-4676-825F-9147066BE616}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBD3E1A5-A070-4676-825F-9147066BE616}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EC0F722E-4455-4BE5-B731-5DECE1FC5822}
+	EndGlobalSection
+EndGlobal

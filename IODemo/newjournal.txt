@@ -1,0 +1,3 @@
+If a filestream becomes corrupted during reading, it'll raise a strem corruption exception
+This could happen due to poor file locking on the OS's part, or from a hardware fault
+Unfortunately, I don't have the money to go around damaging computers to test errors, so I can't demonstrate this
