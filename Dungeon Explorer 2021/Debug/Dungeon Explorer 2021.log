@@ -1,10 +1,6 @@
 ﻿  Source.cpp
-D:\source\repos\Dungeon Explorer 2021\Source.cpp(244,35): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-D:\source\repos\Dungeon Explorer 2021\Source.cpp(402,22): warning C4018: '<': signed/unsigned mismatch
-D:\source\repos\Dungeon Explorer 2021\Source.cpp(517,26): warning C4018: '>': signed/unsigned mismatch
-D:\source\repos\Dungeon Explorer 2021\Source.cpp(517,26): warning C4552: '>': result of expression not used
-D:\source\repos\Dungeon Explorer 2021\Source.cpp(530,26): warning C4018: '>': signed/unsigned mismatch
-D:\source\repos\Dungeon Explorer 2021\Source.cpp(530,26): warning C4552: '>': result of expression not used
-D:\source\repos\Dungeon Explorer 2021\Source.cpp(1255,26): warning C4018: '>': signed/unsigned mismatch
-D:\source\repos\Dungeon Explorer 2021\Source.cpp(1255,26): warning C4552: '>': result of expression not used
+D:\source\repos\Dungeon Explorer 2021\Source.cpp(422,22): warning C4018: '<': signed/unsigned mismatch
+D:\source\repos\Dungeon Explorer 2021\Source.cpp(537,21): warning C4018: '<': signed/unsigned mismatch
+D:\source\repos\Dungeon Explorer 2021\Source.cpp(550,21): warning C4018: '<': signed/unsigned mismatch
+D:\source\repos\Dungeon Explorer 2021\Source.cpp(1305,21): warning C4018: '<': signed/unsigned mismatch
   Dungeon Explorer 2021.vcxproj -> D:\source\repos\Dungeon Explorer 2021\Debug\Dungeon Explorer 2021.exe

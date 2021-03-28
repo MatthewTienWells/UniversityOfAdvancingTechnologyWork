@@ -5,10 +5,12 @@ class Location;
 bool player_yes_no() //Get a yes or no from the player
 {
 	string choice; //string to hold player input
+	cout << ">"; //Show prompt symbol
 	cin >> choice; //Get player input
 	while (choice != "y" && choice != "n" && choice != "Y" && choice != "N") //Loop until player provides valid input
 	{
 		cout << "Please enter either Y for yes or N for no." << endl << ">"; //Instruct player on how to provide valid input
+		cin >> choice; //get player input
 	}
 	if (choice == "y" || choice == "Y") //If the player answered in the affirmative.
 	{
@@ -29,7 +31,7 @@ public:
 	bool weapon = false; //Whether item is a weapon
 	int stat_mod = 0; //Attack or defense change
 	int secondary_stat_mod = 0; //Attack speed or health change
-	string damage_type = "bludgeoning"; //Type of damage item deals or defends against
+	string damage_type = ""; //Type of damage item deals or defends against
 	string name = "Uninitialized Name"; //Item name
 
 	Item() {} //Default constructor
@@ -135,7 +137,7 @@ class Club : public Weapon
 {
 public:
 	int stat_mod = 30; //Attack value with weapon equipped
-	int secondary_stat_mod = 10; //Attack speed with weapon equipped
+	int secondary_stat_mod = 8; //Attack speed with weapon equipped
 	string name = "Iron Club"; //Name
 	string damage_type = "bludgeoning"; //Type of damage dealt
 
@@ -145,11 +147,23 @@ public:
 	}
 };
 
+class WoodClub : public Club
+{
+public:
+	int stat_mod = 20; //Attack value with weapon equipped
+	string name = "Wood Club"; //Name
+
+	WoodClub() //Constructor
+	{
+		set_attr(weapon, stat_mod, secondary_stat_mod, damage_type, name); //Set base class attributes
+	}
+};
+
 class Torch : public Weapon
 {
 public:
 	int stat_mod = 50; //Attack value with weapon equipped
-	int secondary_stat_mod = 15; //Attack speed with weapon equipped
+	int secondary_stat_mod = 12; //Attack speed with weapon equipped
 	string name = "Torch"; //Name
 	string damage_type = "heat"; //Type of damage dealt
 
@@ -239,9 +253,11 @@ public:
 class Character //Base Class for entities
 {
 private:
+	vector<Item> item_list; //Create private list of items to keep randomly generated loot out of method scope
+
 	int RandomRoll() //Method for getting an int between 1 and 100 inclusive
 	{
-		default_random_engine Gener(time(0)); //Create a random number generator object
+		default_random_engine Gener(rd()); //Seed rng
 		uniform_int_distribution<int> dist = uniform_int_distribution<int>(1, 100); //Create a range of integers equal to 1 through 100
 		int num = dist(Gener); //Return a random number between 1 and 100
 		return num;
@@ -252,23 +268,6 @@ private:
 		return find(immunities.begin(), immunities.end(), damage_type) != immunities.end(); //Return whether damage_type is in the entity's immunities
 	};
 
-	virtual void RandomLoot() //Set inventory randomly from the loot table file
-	{
-		ifstream infile(loot_table); //Open the loot table file
-		vector<string> table; //Create a table of strings
-		string currentline; //Create a string to hold the current line
-		while (getline(infile, currentline)) //Read each line from the file into currentline
-		{
-			table.push_back(currentline); //Add the current line to the table
-		}
-		if (RandomRoll() > 50) //Flip a coin to see if the entity drops loot
-		{
-			currentline = table.at(RandomRoll() % table.size()); //Select a random line from the loot table
-			Item Treasure(currentline); //Construct an item from the data
-			Item* loot = &Treasure; //Create pointer to loot
-			inventory.push_back(loot); //Add the treasure to the inventory of this entity
-		}
-	};
 public:
 	int max_health = 100; //Maximum health
 	int health = max_health; //Remaining health
@@ -279,10 +278,11 @@ public:
 	string name = "Uninitialized Name"; //Name of entity
 	string equipped_weapon; //Active weapon for character
 	string equipped_armor; //Active armor for character
-	string loot_table; //File to pull loot table from
+	string loot_table = "StandardLoot.txt"; //File to pull loot table from
 	vector<string> immunities; //Types of damage entity is immune to
 	vector<Item*> inventory; //List of items on character
 	bool death = false; //Flag representing if the entity has died
+	random_device rd; //Get seed for random number generator
 
 	void set_attr(int life, int atk, int spd, int def, string type_damage, string nameID, string loot_file, vector<string> res, vector<Item*> holding) //Set all attributes from child class
 	{
@@ -297,7 +297,8 @@ public:
 		inventory = holding;
 	}
 
-	Character() {} //Allow for construction with default values
+	Character() //Allow for construction with default values
+	{}
 
 	Character(string data) //Constructor function
 	{
@@ -340,13 +341,27 @@ public:
 	virtual tuple<int, string> weak_attack() //Call to execute a weak attack and get damage back
 	{
 		sleep_for(milliseconds(attack_speed * 500)); //Wait for the time listed in attack_speed
-		return tuple<int, string>(attack, damage_type); //Return default damage and damage type
+		if (!death)
+		{
+			return tuple<int, string>(attack, damage_type); //Return default damage and damage type
+		}
+		else
+		{
+			return tuple<int, string>(0, damage_type); //Return 0 damage if entity died while attacking
+		}
 	};
 
 	virtual tuple<int, string> strong_attack() //Call to execute a strong attack and get damage back
 	{
 		sleep_for(milliseconds(attack_speed * 750)); //Wait for 1.5 times the time listed in attack_speed
-		return tuple<int, string>(attack * 2, damage_type); //Return twice the standard damage and the standard damage type
+		if (!death)
+		{
+			return tuple<int, string>(attack * 2, damage_type); //Return twice the standard damage and the standard damage type
+		}
+		else
+		{
+			return tuple<int, string>(0, damage_type); //Return 0 damage if entity died while attacking
+		}
 	};
 
 	virtual void take_attack(int damage_value, string damage_type) //Function to process damage to entity
@@ -354,14 +369,19 @@ public:
 		if (RandomRoll() > defense && !Is_Immune(damage_type) && !death) //Roll to see if an attack landed and if the entity is not immune
 		{
 			health -= damage_value; //Reduce current health by damage
+			cout << name << " takes " << damage_value << " " << damage_type << " damage!" << endl << ">"; //Print message to the console about damage taken
 			if (health <= 0) //If character had no health remaining
 			{
 				death = true; //Set death flag
 			}
 		}
-		else
+		else if (Is_Immune(damage_type)) //If the entity is immune
 		{
-			cout << "The attack failed to connect!" << endl;
+			cout << name << " is immune to " << damage_type << " attacks!" << endl << ">"; //Note that entity is immune to the attack
+		}
+		else //If attack failed
+		{
+			cout << "The attack failed to connect!" << endl << ">"; //Print failure message
 		}
 	};
 
@@ -371,15 +391,15 @@ public:
 		{
 			cout << name << " is ready for a fight! Be on your guard!" << endl; //Print to console
 		}
-		else if (4 * health < 3 * max_health) //Above 3 quarters health
+		else if (4 * health > 3 * max_health) //Above 3 quarters health
 		{
 			cout << name << " is still standing strong! Keep fighting!" << endl; //Print to console
 		}
-		else if (2 * health < max_health) //Above half health
+		else if (2 * health > max_health) //Above half health
 		{
 			cout << name << " is starting to look fatigued! Press on!" << endl; //Print to console
 		}
-		else if (4 * health < max_health) //Above one quarter health
+		else if (4 * health > max_health) //Above one quarter health
 		{
 			cout << name << " looks weak! You can do this!" << endl; //Print to console
 		}
@@ -514,7 +534,7 @@ public:
 		cout << "Attack: " << attack << endl;
 		cout << "Weapon type: " << damage_type << endl;
 		cout << "Immunities: " << endl;
-		for (int i = 0; i++; i > immunities.size())
+		for (int i = 0; i < immunities.size(); i++)
 		{
 			cout << "      " << immunities.at(i) << endl;
 		}
@@ -527,7 +547,7 @@ public:
 
 	void add_to_inventory(vector<Item*> new_items) //Adds new items to inventory
 	{
-		for (int i = 0; i++; i > new_items.size()) //Iterate through new items
+		for (int i = 0; i < new_items.size(); i++) //Iterate through new items
 		{
 			inventory.push_back(new_items.at(i)); //Add item to inventory
 		}
@@ -537,6 +557,27 @@ public:
 	{
 		return health;
 	}
+
+	void RandomLoot() //Set inventory randomly from the loot table file
+	{
+		item_list.clear(); //Clear out any inherited items
+		inventory.clear(); //Clear inventory pointers
+		ifstream infile(loot_table); //Open the loot table file
+		vector<string> table; //Create a table of strings
+		string currentline; //Create a string to hold the current line
+		while (getline(infile, currentline)) //Read each line from the file into currentline
+		{
+			table.push_back(currentline); //Add the current line to the table
+		}
+		if (RandomRoll() > 30) //Flip a coin to see if the entity drops loot
+		{
+			currentline = table.at(RandomRoll() % table.size()); //Select a random line from the loot table
+			Item Treasure(currentline); //Construct an item from the data
+			item_list.push_back(Treasure); //Move generated item out of local scope
+			Item* loot = &(item_list.at(0)); //Create pointer to loot
+			inventory.push_back(loot); //Add the treasure to the inventory of this entity
+		}
+	};
 
 	virtual void win_game() {} //Virtual function
 
@@ -552,6 +593,7 @@ public:
 	Slime() //Constructor
 	{
 		set_attr(max_health, attack, attack_speed, defense, damage_type, name, loot_table, immunities, inventory); //Override all base attributes, either with themselves or new values
+		RandomLoot(); //Get inventory from table
 	}
 };
 
@@ -568,6 +610,7 @@ public:
 	Tiny_Slime() //Constructor
 	{
 		set_attr(max_health, attack, attack_speed, defense, damage_type, name, loot_table, immunities, inventory); //Override all base attributes, either with themselves or new values
+		RandomLoot(); //Get inventory from table
 	}
 };
 
@@ -584,6 +627,7 @@ public:
 	Big_Slime() //Constructor
 	{
 		set_attr(max_health, attack, attack_speed, defense, damage_type, name, loot_table, immunities, inventory); //Override all base attributes, either with themselves or new values
+		RandomLoot(); //Get inventory from table
 	}
 };
 
@@ -617,6 +661,7 @@ public:
 	Bandit() //Constructor
 	{
 		set_attr(max_health, attack, attack_speed, defense, damage_type, name, loot_table, immunities, inventory); //Override all base attributes, either with themselves or new values
+		RandomLoot(); //Get inventory from table
 	}
 };
 
@@ -650,6 +695,7 @@ public:
 	Siren() //Constructor
 	{
 		set_attr(max_health, attack, attack_speed, defense, damage_type, name, loot_table, immunities, inventory); //Override all base attributes, either with themselves or new values
+		RandomLoot(); //Get inventory from table
 	}
 };
 
@@ -1010,7 +1056,7 @@ class Waterfall_Cavern : public Location //Class representing a room that requir
 {
 private:
 	string descriptor = "a large cavern, with a waterfall running through it. The sound of the falls echoing across the chamber is so loud you can't focus on searching."; //Room description
-	string solution = "Ear Plugs"; //Set the solution to the puzzle
+	string solution = "Earplugs"; //Set the solution to the puzzle
 	string solved_descriptor = "Now able to focus, you discover a pathway behind the waterfall leading deeper into the caves."; //Text to show when the puzzle is solved
 public:
 	Waterfall_Cavern() //Constructor
@@ -1143,6 +1189,9 @@ public:
 
 	Player() //Constructor
 	{
+		cout << "Please enter your name" << endl << ">"; //Prompt user for name
+		cin >> name; //Set player name
+		inventory.clear(); //Remove random character loot
 		set_attr(max_health, attack, attack_speed, defense, damage_type, name, loot_table, immunities, inventory); //Override all base attributes, either with themselves or new values
 	}
 
@@ -1172,7 +1221,7 @@ public:
 			}
 			else if (choice == "quit")
 			{
-				cout << "Are you sure ypu want to quit? All progress will be lost! (Y/N)" << endl << ">"; //Warn player their progress will be lost
+				cout << "Are you sure you want to quit? All progress will be lost! (Y/N)" << endl << ">"; //Warn player their progress will be lost
 				if (player_yes_no()) //Ask again if player wants to quit
 				{
 					quit = true;
@@ -1215,8 +1264,11 @@ public:
 				cout << "Keep calm, and enter a command. 'weak' for a fast attack, 'strong' for a powerful attack, or 'run' to get away." << endl; //Show instructions for combat
 			}
 			(*foe).get_status(); //Display info on enemy
-			cout << "You have " << get_health() << " health remaining.";
-			cin >> choice; //Get player input for next action
+			cout << "You have " << get_health() << " health remaining." << endl << ">";
+			if (*player_engaged && (*foe).is_alive() && !death) //If the combat is still active
+			{
+				cin >> choice; //Get player input for next action
+			}
 		}
 		if (death)
 		{
@@ -1252,7 +1304,7 @@ public:
 		cout << "You are currently wearing " << get_armor() << " and wielding " << get_weapon() << endl; //Display equipped items
 		vector<Item*> inventory = get_inventory(); //Get current inventory
 		cout << "You are currently in possesion of:" << endl;
-		for (int i = 0; i++; i > inventory.size())
+		for (int i = 0; i < inventory.size(); i++)
 		{
 			cout << "      " << i + 1 << ": " << (*inventory.at(i)).name << endl;
 		}
@@ -1283,14 +1335,19 @@ public:
 
 int main()
 {
+	cout << "Welcome to Dungeon Explorer. Your goal is to find the treasure at the end of the dungeon. Follow the command prompts to play." << endl; //Display intro message
 	Player user; //Initialize player character
+	cout << "If this is your first time playing, use the 'help' command." << endl; //Instruct player on how to open the instructions
 	Item* starting_club; //Create weapon pointer for player
 	Item* starting_armor; //Create armor pointer for player
-	starting_club = new Club(); //Generate weapon
+	Item* starting_sword; //Create second weapon pointer for player
+	starting_club = new WoodClub(); //Generate weapon
+	starting_sword = new Sword(); //Generate alternate weapon
 	starting_armor = new Mail(); //Generate armor
 	vector<Item*> starting_gear; //Gear player begins with
-	starting_gear.push_back(starting_club); //Add sword to starting gear
+	starting_gear.push_back(starting_club); //Add club to starting gear
 	starting_gear.push_back(starting_armor); //Add mail to starting gear
+	starting_gear.push_back(starting_sword); //Add sword to starting gear
 	user.add_to_inventory(starting_gear); //Give gear to player
 	user.equip(*starting_club); //Equip sword for player
 	user.equip(*starting_armor); //Equip armor for player

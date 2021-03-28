@@ -5,4 +5,4 @@ true;10;2;piercing;Iron Spear
 true;50;15;heat;Torch
 false;20;100;null;Breastplate
 false;10;150;null;Health Pendant
-false;15;100;null;Mail
+false;15;100;null;Chainmail

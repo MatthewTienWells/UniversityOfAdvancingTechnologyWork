@@ -27,6 +27,7 @@ using std::exception;
 using std::ifstream;
 using std::stringstream;
 using std::stoi;
+using std::random_device;
 
 struct FileNotFoundException : public exception //Custom exception for when program attempts to read from a nonexistent file
 {
