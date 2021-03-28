@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "PUp7CuALj+xQVCBqXIAcxlIrMKGZaVZjIXlitChF3ibftHtxndK3QTC6Hbc3lO21Utwf5A8VA1dOdP+VmitdbQ==",
+  "dgSpecHash": "CZybCyjc8YATjBLNcc0iJwft+QtPJ7Mm1bVMdXDN3HXTEnw28QBHH/Hdcg/SEBYlRXeunObKd2/NJatpO30QUA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\wells\\source\\repos\\SuperRobotVSSpaceWizard\\SuperRobotVSSpaceWizard.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "D:\\source\\repos\\SuperRobotVSSpaceWizard\\SuperRobotVSSpaceWizard.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\wells\\.nuget\\packages\\microsoft.netcore.app.ref\\3.1.0\\microsoft.netcore.app.ref.3.1.0.nupkg.sha512",
+    "C:\\Users\\wells\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.1.0\\microsoft.windowsdesktop.app.ref.3.1.0.nupkg.sha512"
+  ],
   "logs": []
 }

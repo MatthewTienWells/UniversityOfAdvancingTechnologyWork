@@ -1,0 +1,2 @@
+D:\source\repos\Dungeon Explorer 2021\Debug\Dungeon Explorer 2021.exe
+D:\source\repos\Dungeon Explorer 2021\Debug\Dungeon Explorer 2021.pdb

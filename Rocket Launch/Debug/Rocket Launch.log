@@ -1,0 +1,8 @@
+﻿  Source.cpp
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\memory(2833,35): error C2661: 'std::tuple<void (__cdecl *)(std::unique_ptr<int,std::default_delete<int>>,std::shared_ptr<bool>),std::unique_ptr<int,std::default_delete<int>>,std::shared_ptr<bool>>::tuple': no overloaded function takes 3 arguments
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\thread(55): message : see reference to function template instantiation 'std::unique_ptr<_Tuple,std::default_delete<_Tuple>> std::make_unique<_Tuple,void(__cdecl &)(std::unique_ptr<int,std::default_delete<int>>,std::shared_ptr<bool>),std::unique_ptr<int,std::default_delete<int>>&,std::shared_ptr<bool>&,0>(void (__cdecl &)(std::unique_ptr<int,std::default_delete<int>>,std::shared_ptr<bool>),std::unique_ptr<int,std::default_delete<int>> &,std::shared_ptr<bool> &)' being compiled
+D:\source\repos\Rocket Launch\Source.cpp(38): message : see reference to function template instantiation 'std::thread::thread<void(__cdecl &)(std::unique_ptr<int,std::default_delete<int>>,std::shared_ptr<bool>),std::unique_ptr<int,std::default_delete<int>>&,std::shared_ptr<bool>&,0>(_Fn,std::unique_ptr<int,std::default_delete<int>> &,std::shared_ptr<bool> &)' being compiled
+          with
+          [
+              _Fn=void (__cdecl &)(std::unique_ptr<int,std::default_delete<int>>,std::shared_ptr<bool>)
+          ]

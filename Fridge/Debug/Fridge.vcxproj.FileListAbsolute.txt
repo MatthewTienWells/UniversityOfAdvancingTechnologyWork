@@ -1,2 +1,4 @@
 C:\Users\wells\source\repos\Fridge\Debug\Fridge.exe
 C:\Users\wells\source\repos\Fridge\Debug\Fridge.pdb
+D:\source\repos\Fridge\Debug\Fridge.exe
+D:\source\repos\Fridge\Debug\Fridge.pdb
