@@ -636,7 +636,7 @@ class Big_Slime : public Slime
 {
 public:
 	string name = "Huge Slime"; //Set name
-	int max_health = 200; //Set maximum health for big slime
+	int max_health = 160; //Set maximum health for big slime
 	int health = max_health; //Set health to max health
 	int attack = 15; //Set attack power
 	int attack_speed = 8; //Set attack speed
@@ -786,7 +786,7 @@ public:
 		return this;
 	}
 
-	void enter_room(Character* player) //Activate when room is entered
+	virtual void enter_room(Character* player) //Activate when room is entered
 	{
 		if (!cleared) //If the room has not yet been cleared
 		{
@@ -932,6 +932,7 @@ public:
 				}
 			}
 		}
+		return false; //If none of the options were taken
 	}
 
 	void retreat(Character* player) //Sends the player back one room

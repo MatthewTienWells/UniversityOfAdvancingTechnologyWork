@@ -2,6 +2,5 @@
 D:\source\repos\Dungeon Explorer 2021\Source.cpp(443,22): warning C4018: '<': signed/unsigned mismatch
 D:\source\repos\Dungeon Explorer 2021\Source.cpp(558,21): warning C4018: '<': signed/unsigned mismatch
 D:\source\repos\Dungeon Explorer 2021\Source.cpp(571,21): warning C4018: '<': signed/unsigned mismatch
-D:\source\repos\Dungeon Explorer 2021\Source.cpp(1321,21): warning C4018: '<': signed/unsigned mismatch
-D:\source\repos\Dungeon Explorer 2021\Source.cpp(935): warning C4715: 'Location::change_room': not all control paths return a value
+D:\source\repos\Dungeon Explorer 2021\Source.cpp(1322,21): warning C4018: '<': signed/unsigned mismatch
   Dungeon Explorer 2021.vcxproj -> D:\source\repos\Dungeon Explorer 2021\Debug\Dungeon Explorer 2021.exe
