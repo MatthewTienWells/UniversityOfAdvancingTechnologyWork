@@ -5,7 +5,7 @@ class Location;
 bool player_yes_no() //Get a yes or no from the player
 {
 	string choice; //string to hold player input
-	cout << ">"; //Show prompt symbol
+	cout << endl << ">"; //Show prompt symbol
 	cin >> choice; //Get player input
 	while (choice != "y" && choice != "n" && choice != "Y" && choice != "N") //Loop until player provides valid input
 	{
@@ -23,7 +23,27 @@ bool player_yes_no() //Get a yes or no from the player
 }
 
 void help() //Display help info
-{}
+{
+	cout << "Welcome to Dungeon Explorer." << endl;
+	cout << "Your goal is to find the treasure at the end of this dungeon complex." << endl;
+	cout << "You may move deeper into the dungeon, or move back to return to prior areas." << endl;
+	cout << "Most rooms either have a puzzle, or an enemy." << endl;
+	cout << "To clear a puzzle, equip the required item from your inventory, then attempt to move through the room." << endl;
+	cout << "To clear a combat room, defeat the enemy within it." << endl;
+	cout << "Once you've cleared a room, you can move through it freely." << endl;
+	cout << "To navigate, use items, or check your stats, just follow the text prompts." << endl << endl;
+	cout << "Combat Tips:" << endl;
+	cout << "While in combat, you can enter the commands 'weak', 'strong', or 'run'." << endl;
+	cout << "Entering the command 'weak' will attempt to strike your foe. If it hits, you'll deal damage equal to your attack stat." << endl;
+	cout << "Entering the command 'strong' will do the same thing, but it will take 50% longer and deal twice your attack stat in damage." << endl;
+	cout << "Entering the command 'run' will take you to the previous room, ending combat." << endl;
+	cout << "You and enemies heal completely when you aren't in combat, so don't be afraid to run and take a second shot at it later." << endl;
+	cout << "You can change your stats by equipping items. You can equip one weapon and one non-weapon at a time." << endl;
+	cout << "Some weapons don't work on certain enemies, and some non-weapons can grant you immunity to certain enemies." << endl;
+	cout << "If you can't win a fight, try changing your equipped gear." << endl;
+	cout << "The higher your defense is, the less likely an attack is to connect." << endl;
+	cout << "Enemies will keep attacking while you choose your commands or execute attacks, so be quick and think ahead!" << endl;
+}
 
 class Item
 {
@@ -263,7 +283,7 @@ private:
 		return num;
 	};
 
-	virtual bool Is_Immune(string damage_type) //Test for immunity to damage
+	bool Is_Immune(string damage_type) //Test for immunity to damage
 	{
 		return find(immunities.begin(), immunities.end(), damage_type) != immunities.end(); //Return whether damage_type is in the entity's immunities
 	};
@@ -338,7 +358,7 @@ public:
 		}
 	}
 
-	virtual tuple<int, string> weak_attack() //Call to execute a weak attack and get damage back
+	tuple<int, string> weak_attack() //Call to execute a weak attack and get damage back
 	{
 		sleep_for(milliseconds(attack_speed * 500)); //Wait for the time listed in attack_speed
 		if (!death)
@@ -351,7 +371,7 @@ public:
 		}
 	};
 
-	virtual tuple<int, string> strong_attack() //Call to execute a strong attack and get damage back
+	tuple<int, string> strong_attack() //Call to execute a strong attack and get damage back
 	{
 		sleep_for(milliseconds(attack_speed * 750)); //Wait for 1.5 times the time listed in attack_speed
 		if (!death)
@@ -364,7 +384,7 @@ public:
 		}
 	};
 
-	virtual void take_attack(int damage_value, string damage_type) //Function to process damage to entity
+	void take_attack(int damage_value, string damage_type) //Function to process damage to entity
 	{
 		if (RandomRoll() > defense && !Is_Immune(damage_type) && !death) //Roll to see if an attack landed and if the entity is not immune
 		{
@@ -385,7 +405,7 @@ public:
 		}
 	};
 
-	virtual void get_status() //Display entity's current status
+	void get_status() //Display entity's current status
 	{
 		if (max_health == health) //At full health
 		{
@@ -413,8 +433,9 @@ public:
 		}
 	}
 
-	virtual vector<Item*> die() //Function to process character death
+	vector<Item*> die() //Function to process character death
 	{
+		RandomLoot(); //Get inventory from table
 		cout << name << " falls to the ground, lifeless." << endl; //Print message to console
 		if (!inventory.empty()) //If the entity was carrying items
 		{
@@ -448,12 +469,12 @@ public:
 		}
 	};
 
-	virtual thread combat_thread(bool* player_engaged, Character* user) //Wrapper for combat routine to allow threading
+	thread combat_thread(bool* player_engaged, Character* user) //Wrapper for combat routine to allow threading
 	{
 		return thread(&Character::combat_routine, this, player_engaged, user); //Return thread running combat routine method
 	};
 
-	virtual void equip(Item equipment) //Equip item
+	void equip(Item equipment) //Equip item
 	{
 		if (equipment.weapon) //If item is a weapon
 		{
@@ -488,7 +509,7 @@ public:
 		}
 	};
 
-	virtual void unequip(bool weapon) //remove a piece of equipment from character
+	void unequip(bool weapon) //remove a piece of equipment from character
 	{
 		if (weapon) //If equipment was weapon, reset damage stats
 		{
@@ -506,29 +527,29 @@ public:
 		}
 	}
 
-	virtual void heal() //Heal this character to max
+	void heal() //Heal this character to max
 	{
 		health = max_health; //Set health
 	}
 
-	virtual bool is_alive() //Return whether character is alive
+	bool is_alive() //Return whether character is alive
 	{
 		return !death; //Return if the death flag has not been set
 	}
 
-	virtual string get_armor() //Get equipped armor
+	string get_armor() //Get equipped armor
 	{
 		return equipped_armor; //Return string representing armor
 	}
 
-	virtual string get_weapon() //Get equipped weapon
+	string get_weapon() //Get equipped weapon
 	{
 		return equipped_weapon; //Return string representing equipped weapon
 	}
 
-	virtual void print_stats() //Print entity stats to the console
+	void print_stats() //Print entity stats to the console
 	{
-		cout << "Health: " << health << endl;
+		cout << "Health: " << max_health << endl;
 		cout << "Defense: " << defense << endl;
 		cout << "Speed: " << attack_speed << endl;
 		cout << "Attack: " << attack << endl;
@@ -560,8 +581,6 @@ public:
 
 	void RandomLoot() //Set inventory randomly from the loot table file
 	{
-		item_list.clear(); //Clear out any inherited items
-		inventory.clear(); //Clear inventory pointers
 		ifstream infile(loot_table); //Open the loot table file
 		vector<string> table; //Create a table of strings
 		string currentline; //Create a string to hold the current line
@@ -569,7 +588,7 @@ public:
 		{
 			table.push_back(currentline); //Add the current line to the table
 		}
-		if (RandomRoll() > 30) //Flip a coin to see if the entity drops loot
+		if (RandomRoll() > 10) //Flip a coin to see if the entity drops loot
 		{
 			currentline = table.at(RandomRoll() % table.size()); //Select a random line from the loot table
 			Item Treasure(currentline); //Construct an item from the data
@@ -588,12 +607,12 @@ class Slime : public Character
 {
 public:
 	string name = "Slime"; //Set name
+	int attack = 7; //Set attack power
 	vector<string> immunities = { "piercing", "slashing" }; //Set damage immunities
 
 	Slime() //Constructor
 	{
 		set_attr(max_health, attack, attack_speed, defense, damage_type, name, loot_table, immunities, inventory); //Override all base attributes, either with themselves or new values
-		RandomLoot(); //Get inventory from table
 	}
 };
 
@@ -610,7 +629,6 @@ public:
 	Tiny_Slime() //Constructor
 	{
 		set_attr(max_health, attack, attack_speed, defense, damage_type, name, loot_table, immunities, inventory); //Override all base attributes, either with themselves or new values
-		RandomLoot(); //Get inventory from table
 	}
 };
 
@@ -627,7 +645,6 @@ public:
 	Big_Slime() //Constructor
 	{
 		set_attr(max_health, attack, attack_speed, defense, damage_type, name, loot_table, immunities, inventory); //Override all base attributes, either with themselves or new values
-		RandomLoot(); //Get inventory from table
 	}
 };
 
@@ -655,13 +672,12 @@ public:
 	int max_health = 150; //Set maximum health for bandit
 	int health = max_health; //Set health to max health
 	int attack = 15; //Set attack power
-	int attack_speed = 6; //Set attack speed
+	int attack_speed = 8; //Set attack speed
 	string damage_type = "slashing"; //Set damage type
 
 	Bandit() //Constructor
 	{
 		set_attr(max_health, attack, attack_speed, defense, damage_type, name, loot_table, immunities, inventory); //Override all base attributes, either with themselves or new values
-		RandomLoot(); //Get inventory from table
 	}
 };
 
@@ -672,7 +688,7 @@ public:
 	int max_health = 180; //Set maximum health for bandit
 	int health = max_health; //Set health to max health
 	int attack = 15; //Set attack power
-	int attack_speed = 3; //Set attack speed
+	int attack_speed = 6; //Set attack speed
 	string damage_type = "slashing"; //Set damage type
 
 	Bandit_Leader() //Constructor
@@ -695,7 +711,6 @@ public:
 	Siren() //Constructor
 	{
 		set_attr(max_health, attack, attack_speed, defense, damage_type, name, loot_table, immunities, inventory); //Override all base attributes, either with themselves or new values
-		RandomLoot(); //Get inventory from table
 	}
 };
 
@@ -771,7 +786,7 @@ public:
 		return this;
 	}
 
-	virtual void enter_room(Character* player) //Activate when room is entered
+	void enter_room(Character* player) //Activate when room is entered
 	{
 		if (!cleared) //If the room has not yet been cleared
 		{
@@ -780,7 +795,7 @@ public:
 			{
 				cout << "You peer into the chamber beyond." << endl << "Inside, you see: " << descriptor << endl; //Print message to console
 				cout << "You catch a glimpse of movement in the chamber." << endl;
-				cout << "Enter the chamber and fight? (Y/N)" << endl << ">";
+				cout << "Enter the chamber and fight? (Y/N)";
 				if (player_yes_no()) //If the player answered in the affirmative.
 				{
 					bool engaged = true; //Boolean representing whether the player is engaged in combat
@@ -802,7 +817,7 @@ public:
 			{
 				cout << "A quick look inside the room reveals it is unoccupied." << endl; //Print description to console
 				cout << "You venture inside to find " << descriptor << endl;
-				cout << "Use an item? (Y/N)" << endl << ">";
+				cout << "Use an item? (Y/N)";
 				if (player_yes_no()) //If the player answered in the affirmative.
 				{
 					if (solution == (*player).get_armor() || solution == (*player).get_weapon()) //If the player has the solution to the puzzle equipped
@@ -827,13 +842,13 @@ public:
 		}
 	}
 
-	virtual bool change_room(Character* player) //Change location to somewhere else
+	bool change_room(Character* player) //Change location to somewhere else
 	{
 		string choice; //String representing player choice
 		if (!cleared)
 		{
 			cout << "The path forward is blocked: " << descriptor << endl;
-			cout << "Use an item? (Y/N)" << endl << ">";
+			cout << "Use an item? (Y/N)";
 			if (player_yes_no()) //If the player answered in the affirmative.
 			{
 				if (solution == (*player).get_armor() || solution == (*player).get_weapon()) //If the player has the solution to the puzzle equipped
@@ -850,7 +865,7 @@ public:
 			}
 			else //If the player answered negatively
 			{
-				cout << "Would you like to return to a previous area? (Y/N)" << endl << ">"; //Ask if the player wants to go back
+				cout << "Would you like to return to a previous area? (Y/N)"; //Ask if the player wants to go back
 				if (player_yes_no()) //If the player answers affirmatively
 				{
 					retreat(player); //Go back to the parent room
@@ -866,10 +881,10 @@ public:
 		{
 			if (children.size() != 0)
 			{
-				cout << "Do you want to continue deeper into the dungeon? (Y/N)" << endl; //Ask if the player wants to move forward
+				cout << "Do you want to continue deeper into the dungeon? (Y/N)"; //Ask if the player wants to move forward
 				if (player_yes_no()) //If the player answers affirmatively
 				{
-					cout << "Moving forward, you see " << children.size() << " doors. Which one will you enter? Input a number." << ">"; //Ask the player what door to enter
+					cout << "Moving forward, you see " << children.size() << " doors. Which one will you enter? Input a number." << endl << ">"; //Ask the player what door to enter
 					cin >> choice; //Get player input
 					try //Validate input
 					{
@@ -888,9 +903,9 @@ public:
 					(*player).move(children.at(door - 1)); //Set new player location
 					return true; //Exit with value true showing playert moved
 				}
-				else //If player answers no to venturing deeper
+				else if (parent) //If player answers no to venturing deeper
 				{
-					cout << "Would you like to return to a previous area? (Y/N)" << endl << ">"; //Ask if the player wants to go back
+					cout << "Would you like to return to a previous area? (Y/N)"; //Ask if the player wants to go back
 					if (player_yes_no()) //If the player answers affirmatively
 					{
 						retreat(player); //Go back to the parent room
@@ -902,10 +917,10 @@ public:
 					}
 				}
 			}
-			else
+			else if (parent)
 			{
 				cout << "There doesn't seem to be any way forward from here." << endl;
-				cout << "Would you like to return to a previous area? (Y/N)" << endl << ">"; //Ask if the player wants to go back
+				cout << "Would you like to return to a previous area? (Y/N)"; //Ask if the player wants to go back
 				if (player_yes_no()) //If the player answers affirmatively
 				{
 					retreat(player); //Go back to the parent room
@@ -921,7 +936,7 @@ public:
 
 	void retreat(Character* player) //Sends the player back one room
 	{
-		(*player).move((*parent).return_room()); //Return to parent room
+		(*player).move(parent); //Return to parent room
 	}
 
 	string get_descriptor()
@@ -950,7 +965,7 @@ public:
 	bool change_room(Character* player) //Change location to somewhere else
 	{
 		string choice; //String representing player choice
-		cout << "Do you want to continue deeper into the dungeon? (Y/N)" << endl; //Ask if the player wants to move forward
+		cout << "Do you want to continue deeper into the dungeon? (Y/N)"; //Ask if the player wants to move forward
 		if (player_yes_no()) //If the player answers affirmatively
 		{
 			cout << "Moving forward, you see " << children.size() << " doors. Which one will you enter? Input a number." << ">"; //Ask the player what door to enter
@@ -1138,11 +1153,10 @@ private:
 public:
 	Bandit_Hideout()
 	{
-		SlayerBlade sword;
 		Item* swordPtr; //Create pointer to item
 		Character* foe; //Create pointer to enemy
 		foe = new Bandit_Leader; //Generate enemy
-		swordPtr = &sword; //Generate legendary sword
+		swordPtr = new SlayerBlade;
 		vector<Item*> loot_list; //Create list of special loot
 		loot_list.push_back(swordPtr); //Add sword to list
 		(*foe).add_to_inventory(loot_list); //Add list to inventory of bandit leader
@@ -1221,7 +1235,7 @@ public:
 			}
 			else if (choice == "quit")
 			{
-				cout << "Are you sure you want to quit? All progress will be lost! (Y/N)" << endl << ">"; //Warn player their progress will be lost
+				cout << "Are you sure you want to quit? All progress will be lost! (Y/N)"; //Warn player their progress will be lost
 				if (player_yes_no()) //Ask again if player wants to quit
 				{
 					quit = true;
