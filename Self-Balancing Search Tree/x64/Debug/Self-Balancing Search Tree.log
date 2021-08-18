@@ -1,0 +1,3 @@
+﻿  Source.cpp
+D:\source\repos\Self-Balancing Search Tree\Source.cpp(488): warning C4715: 'WellsSearchTree<int>::Delete': not all control paths return a value
+  Self-Balancing Search Tree.vcxproj -> D:\source\repos\Self-Balancing Search Tree\x64\Debug\Self-Balancing Search Tree.exe
